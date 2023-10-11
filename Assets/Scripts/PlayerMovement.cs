@@ -8,11 +8,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    public Animator animatior;
+    public Animator animator;
 
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -20,7 +21,13 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-        
+        //if normal attack
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetBool("IsAttack",true);
+        }
+
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -45,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         //Move the character
         Vector3 movement = new Vector3(horizontalInput, verticalInput, 0f).normalized * moveSpeed;
         transform.position += movement * Time.deltaTime;
-        animatior.SetFloat("speed", movement.magnitude);
+        animator.SetFloat("speed", movement.magnitude);
 
     }
 
