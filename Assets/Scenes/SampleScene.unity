@@ -648,7 +648,7 @@ Animator:
   m_GameObject: {fileID: 1179785800}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cbedab6f71bdc2f4b8c0bb4b1dfc92e7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3c2a5b7097b0fe44394328c0bdb9252e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -672,7 +672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  animatior: {fileID: 1179785803}
+  animator: {fileID: 0}
 --- !u!1 &1526142044
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,7 +852,7 @@ GameObject:
   - component: {fileID: 1695548719}
   - component: {fileID: 1695548718}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Enemy1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

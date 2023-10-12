@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
         //if normal attack
         if (Input.GetMouseButtonDown(0))
         {
-            animator.SetBool("IsAttack",true);
+            animator.SetBool("Attack1",true);
         }
 
 
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         //Move the character
         Vector3 movement = new Vector3(horizontalInput, verticalInput, 0f).normalized * moveSpeed;
         transform.position += movement * Time.deltaTime;
-        animator.SetFloat("speed", movement.magnitude);
+        animator.SetFloat("Speed", movement.magnitude);
 
     }
 
