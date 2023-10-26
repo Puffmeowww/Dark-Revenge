@@ -14,10 +14,19 @@ public class EnemyAI : MonoBehaviour
 
     private Animator animator;
 
+    private float targetRange = 2f;
+    private float attackRange = 1.5f;
+
+
+    private float nextAttackTime;
+    private float attackRate = 3f;
+
+
     private enum State
     {
         Roaming,
         ChaseTarget,
+        Attack,
     }
 
     private State state;
@@ -66,6 +75,8 @@ public class EnemyAI : MonoBehaviour
 
             case State.ChaseTarget:
                 pathfindingMovement.MoveTo(player.transform.position);
+                animator.SetBool("IsMove", true);
+                animator.SetBool("IsAttack", false);
 
                 if ((player.transform.position - transform.position).x > 0)
                 {
@@ -76,6 +87,30 @@ public class EnemyAI : MonoBehaviour
                     FlipCharacter(1f);
                 }
 
+                FindTarget();
+                break;
+
+            case State.Attack:
+
+                animator.SetBool("IsMove", false);
+                animator.SetBool("IsAttack", true);
+
+                if ((player.transform.position - transform.position).x > 0)
+                {
+                    FlipCharacter(-1f);
+                }
+                else
+                {
+                    FlipCharacter(1f);
+                }
+
+                if (Time.time > nextAttackTime)
+                {
+                    state = State.Attack;
+                    print("Attack");
+                    nextAttackTime = Time.time + attackRate;
+                }
+                FindTarget();
                 break;
         }
 
@@ -106,11 +141,22 @@ public class EnemyAI : MonoBehaviour
 
     private void FindTarget()
     {
-        float targetRange = 2f;
-        if(Vector3.Distance(transform.position,player.transform.position) < targetRange)
+
+        if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
+        {
+            state = State.Attack;
+            return;
+        }
+
+        if (Vector3.Distance(transform.position,player.transform.position) < targetRange)
         {
             state = State.ChaseTarget;
         }
+
+
+        
     }
+
+
 
 }
