@@ -6,15 +6,20 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
-    private Rigidbody2D rb;
-
     public Animator animator;
 
+    public Transform attackPoint;
+    public float attackRange = 1f;
+    public LayerMask enemyLayers;
+    public float playerDamage = 20f;
+
+    AudioSource audioSource;
+    public AudioClip swordAudio;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -25,6 +30,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetBool("Attack1",true);
+
+
+            audioSource.clip = swordAudio;
+            audioSource.Play();
+            Attack();
+        }
+
+        else
+        {
+            animator.SetBool("Attack1", false);
         }
 
 
@@ -62,6 +77,26 @@ public class PlayerMovement : MonoBehaviour
         scale.x = direction;
         transform.localScale = scale;
     }
+
+
+
+
+    /*
+     * 
+     * Damage funtions
+     * 
+     */
+
+    private void Attack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<EnemyAI>().TakeDamage(playerDamage);
+        }
+    }
+
 
 
 }

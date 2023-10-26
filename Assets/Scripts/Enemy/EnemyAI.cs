@@ -5,6 +5,13 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
 
+    //Enemy Health
+    public float enemyCurrentHealth = 100f;
+    public float enemyMaxHealth = 100f;
+
+    FloatingHealthBar healthBar;
+
+
     private Vector3 startingPosition;
     private Vector3 roamPosition;
 
@@ -22,11 +29,13 @@ public class EnemyAI : MonoBehaviour
     private float attackRate = 3f;
 
 
+
     private enum State
     {
         Roaming,
         ChaseTarget,
         Attack,
+        Dead,
     }
 
     private State state;
@@ -37,6 +46,10 @@ public class EnemyAI : MonoBehaviour
         animator = GetComponent<Animator>();
 
         state = State.Roaming;
+
+
+        //Health Bar
+        healthBar = GetComponentInChildren<FloatingHealthBar>();
     }
 
     private void Start()
@@ -90,6 +103,8 @@ public class EnemyAI : MonoBehaviour
                 FindTarget();
                 break;
 
+
+
             case State.Attack:
 
                 animator.SetBool("IsMove", false);
@@ -107,10 +122,15 @@ public class EnemyAI : MonoBehaviour
                 if (Time.time > nextAttackTime)
                 {
                     state = State.Attack;
-                    print("Attack");
                     nextAttackTime = Time.time + attackRate;
                 }
                 FindTarget();
+                break;
+
+            case State.Dead:
+                animator.SetBool("IsMove", false);
+                animator.SetBool("IsAttack", false);
+                animator.SetBool("IsDead", true);
                 break;
         }
 
@@ -158,5 +178,22 @@ public class EnemyAI : MonoBehaviour
     }
 
 
+
+
+
+    public void TakeDamage(float damageAmount)
+    {
+        enemyCurrentHealth -= damageAmount;
+
+        Debug.Log(enemyCurrentHealth);
+        healthBar.UpdateHealthBar(enemyCurrentHealth, enemyMaxHealth);
+
+        if (enemyCurrentHealth <= 0)
+        {
+            state = State.Dead;
+        }
+
+        
+    }
 
 }

@@ -6,8 +6,6 @@ public class EnemyPathfinding : MonoBehaviour
 {
     //Movement Speed
     public float speed = 10.0f;
-    //Max Rotation Speed
-    public float maxRotationSpeed = 360f;
     Coroutine moveCoroutine;
     int targetIndex;
     Vector3[] path;
@@ -67,14 +65,5 @@ public class EnemyPathfinding : MonoBehaviour
         }
     }
 
-    // Face target function
-    void FaceTarget(Vector3 velocity)
-    {
-        if (velocity.magnitude > 0)
-        {
-            float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxRotationSpeed * Time.deltaTime);
-        }
-    }
+ 
 }
