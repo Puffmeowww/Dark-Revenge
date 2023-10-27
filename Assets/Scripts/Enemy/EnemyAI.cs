@@ -40,6 +40,10 @@ public class EnemyAI : MonoBehaviour
     AudioSource audioSource;
 
 
+    //Enemy Sprite
+    SpriteRenderer enemySprite;
+
+
     //State Machine
     private enum State
     {
@@ -57,7 +61,7 @@ public class EnemyAI : MonoBehaviour
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
-
+        enemySprite = GetComponent<SpriteRenderer>();
         //Initialize enemy state
         state = State.Roaming;
 
@@ -88,11 +92,11 @@ public class EnemyAI : MonoBehaviour
 
                 if ((roamPosition - transform.position).x > 0)
                 {
-                    FlipCharacter(-1f);
+                    enemySprite.flipX = true;
                 }
                 else
                 {
-                    FlipCharacter(1f);
+                    enemySprite.flipX = false;
                 }
 
                 FindTarget();
@@ -105,11 +109,11 @@ public class EnemyAI : MonoBehaviour
 
                 if ((player.transform.position - transform.position).x > 0)
                 {
-                    FlipCharacter(-1f);
+                    enemySprite.flipX = true;
                 }
                 else
                 {
-                    FlipCharacter(1f);
+                    enemySprite.flipX = false;
                 }
 
                 FindTarget();
@@ -124,11 +128,11 @@ public class EnemyAI : MonoBehaviour
 
                 if ((player.transform.position - transform.position).x > 0)
                 {
-                    FlipCharacter(-1f);
+                    enemySprite.flipX = true;
                 }
                 else
                 {
-                    FlipCharacter(1f);
+                    enemySprite.flipX = false;
                 }
 
                 if(audioSource.isPlaying == false)
@@ -173,13 +177,13 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-    private void FlipCharacter(float direction)
+/*    private void FlipCharacter(float direction)
     {
         Vector3 scale = transform.localScale;
         scale.x = direction;
         transform.localScale = scale;
     }
-
+*/
 
     private void FindTarget()
     {

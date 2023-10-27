@@ -20,16 +20,23 @@ public class PlayerMovement : MonoBehaviour
     AudioSource audioSource;
     public AudioClip swordAudio;
 
+    //Player Health
     public float playerCurrentHealth = 100f;
     public float playerMaxHealth = 100f;
+
     //Health Bar
     FloatingHealthBar healthBar;
+
+
+    //Player Sprite
+    SpriteRenderer playerSprite;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
+        playerSprite = GetComponent<SpriteRenderer>();
     }
 
 
@@ -67,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
         // Flip the character
         if (isMouseOnLeft)
         {
-            FlipCharacter(-1f);
+            playerSprite.flipX = true;
         }
         else
         {
-            FlipCharacter(1f);
+            playerSprite.flipX = false;
         }
 
         //Move the character
@@ -81,12 +88,12 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void FlipCharacter(float direction)
+/*    private void FlipCharacter(float direction)
     {
         Vector3 scale = transform.localScale;
         scale.x = direction;
         transform.localScale = scale;
-    }
+    }*/
 
 
 
