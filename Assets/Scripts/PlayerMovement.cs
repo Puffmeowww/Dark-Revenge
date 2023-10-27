@@ -122,10 +122,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (playerCurrentHealth <= 0)
         {
-            Debug.Log("Player Dead");
+            animator.SetBool("Death", true);
         }
 
-
+        animator.SetBool("Hurt", true);
     }
 
 }
