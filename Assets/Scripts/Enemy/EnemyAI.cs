@@ -119,7 +119,6 @@ public class EnemyAI : MonoBehaviour
 
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
-                animator.SetBool("IsAttack", false);
 
                 if ((player.transform.position - transform.position).x > 0)
                 {
@@ -139,8 +138,8 @@ public class EnemyAI : MonoBehaviour
 
                 //Debug.Log("Attack");
 
-                animator.SetBool("IsMove", false);
-                animator.SetBool("IsAttack", true);
+
+                animator.SetTrigger("Attack");
 
                 if ((player.transform.position - transform.position).x > 0)
                 {
@@ -172,15 +171,15 @@ public class EnemyAI : MonoBehaviour
 
             case State.Dead:
                 animator.SetBool("IsMove", false);
-                animator.SetBool("IsAttack", false);
-                animator.SetBool("IsDead", true);
+
+                animator.SetTrigger("Death");
                 break;
 
 
             case State.Hurt:
 
                 animator.SetBool("IsMove", false);
-                animator.SetBool("IsAttack", false);
+
 
                 break;
         }
