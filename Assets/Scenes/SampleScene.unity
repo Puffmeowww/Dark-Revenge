@@ -15046,11 +15046,15 @@ MonoBehaviour:
   enemyCurrentHealth: 100
   enemyMaxHealth: 100
   player: {fileID: 1179785800}
+  targetRange: 2
+  attackRange: 1.5
   attackPoint: {fileID: 715398093}
   playerLayers:
     serializedVersion: 2
     m_Bits: 128
   enemyDamage: 30
+  attackAudio: {fileID: 8300000, guid: e565b3cc11263ac4aa1b9021f50741ee, type: 3}
+  findTargetAudio: {fileID: 8300000, guid: 6a97e267ff6265641b186e00ee17173f, type: 3}
 --- !u!61 &715398097
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -10,6 +10,14 @@ public class EnemyPathfinding : MonoBehaviour
     int targetIndex;
     Vector3[] path;
 
+    //Animator
+    private Animator animator;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void Update()
     {
         
@@ -34,7 +42,16 @@ public class EnemyPathfinding : MonoBehaviour
             }
             //Start a new coroutine
             moveCoroutine = StartCoroutine("FollowPath");
+            animator.SetBool("IsMove", true);
         }
+
+        //Test
+        else
+        {
+            animator.SetBool("IsMove", false);
+        }
+        //Test
+
 
     }
 

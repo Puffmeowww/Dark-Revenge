@@ -24,12 +24,12 @@ public class EnemyAI : MonoBehaviour
     private Animator animator;
 
     //Detect Range
-    private float targetRange = 2f;
-    private float attackRange = 1.5f;
+    public float targetRange = 4f;
+    public float attackRange = 1.5f;
 
     //Attack Time
     private float nextAttackTime;
-    private float attackRate = 3f;
+    private float attackRate = 1.5f;
 
     //Attack damage
     public Transform attackPoint;
@@ -38,6 +38,9 @@ public class EnemyAI : MonoBehaviour
 
     //Audio resource
     AudioSource audioSource;
+
+    public AudioClip attackAudio;
+    public AudioClip findTargetAudio;
 
 
     //Enemy Sprite
@@ -51,6 +54,7 @@ public class EnemyAI : MonoBehaviour
         ChaseTarget,
         Attack,
         Dead,
+        Hurt,
     }
 
     private State state;
@@ -81,14 +85,21 @@ public class EnemyAI : MonoBehaviour
         {
             default:
             case State.Roaming:
+
+                //Debug.Log("Roaming");
+
                 pathfindingMovement.MoveTo(roamPosition);
                 float reachedPositionDistance = 2f;
                 if (Vector3.Distance(transform.position, roamPosition) < reachedPositionDistance)
                 {
                     roamPosition = GetRoamingPosition();
                 }
+                else if(animator.GetBool("IsMove") == false)
+                {
+                    roamPosition = GetRoamingPosition();
+                }
 
-                animator.SetBool("IsMove", true);
+                //animator.SetBool("IsMove", true);
 
                 if ((roamPosition - transform.position).x > 0)
                 {
@@ -103,6 +114,9 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case State.ChaseTarget:
+
+                //Debug.Log("Chasing Player");
+
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
                 animator.SetBool("IsAttack", false);
@@ -123,6 +137,8 @@ public class EnemyAI : MonoBehaviour
 
             case State.Attack:
 
+                //Debug.Log("Attack");
+
                 animator.SetBool("IsMove", false);
                 animator.SetBool("IsAttack", true);
 
@@ -137,6 +153,7 @@ public class EnemyAI : MonoBehaviour
 
                 if(audioSource.isPlaying == false)
                 {
+                    audioSource.clip = attackAudio;
                     audioSource.Play();
                 }
 
@@ -158,6 +175,14 @@ public class EnemyAI : MonoBehaviour
                 animator.SetBool("IsAttack", false);
                 animator.SetBool("IsDead", true);
                 break;
+
+
+            case State.Hurt:
+
+                animator.SetBool("IsMove", false);
+                animator.SetBool("IsAttack", false);
+
+                break;
         }
 
        
@@ -177,13 +202,6 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-/*    private void FlipCharacter(float direction)
-    {
-        Vector3 scale = transform.localScale;
-        scale.x = direction;
-        transform.localScale = scale;
-    }
-*/
 
     private void FindTarget()
     {
@@ -196,6 +214,13 @@ public class EnemyAI : MonoBehaviour
 
         if (Vector3.Distance(transform.position,player.transform.position) < targetRange)
         {
+
+            if (audioSource.isPlaying == false)
+            {
+                audioSource.clip = findTargetAudio;
+                audioSource.Play();
+                
+            }
             state = State.ChaseTarget;
         }
 
@@ -205,19 +230,22 @@ public class EnemyAI : MonoBehaviour
 
 
 
-
-
     public void TakeDamage(float damageAmount)
     {
         enemyCurrentHealth -= damageAmount;
+
 
         healthBar.UpdateHealthBar(enemyCurrentHealth, enemyMaxHealth);
 
         if (enemyCurrentHealth <= 0)
         {
             state = State.Dead;
+            return;
         }
 
+        state = State.Hurt;
+
+        animator.SetTrigger("Hurt");
         
     }
 
@@ -231,8 +259,6 @@ public class EnemyAI : MonoBehaviour
             player.GetComponent<PlayerMovement>().TakeDamage(enemyDamage);
         }
         
-
-
     }
 
 
