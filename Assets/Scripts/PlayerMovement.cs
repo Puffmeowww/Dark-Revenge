@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    //Player movespeed
     public float moveSpeed = 5f;
 
+    //Player animator
     public Animator animator;
 
+    //player attack variables
     public Transform attackPoint;
     public float attackRange = 1f;
     public LayerMask enemyLayers;
@@ -16,10 +20,16 @@ public class PlayerMovement : MonoBehaviour
     AudioSource audioSource;
     public AudioClip swordAudio;
 
+    public float playerCurrentHealth = 100f;
+    public float playerMaxHealth = 100f;
+    //Health Bar
+    FloatingHealthBar healthBar;
+
     void Start()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        healthBar = GetComponentInChildren<FloatingHealthBar>();
     }
 
 
@@ -97,6 +107,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damageAmount)
+    {
+        playerCurrentHealth -= damageAmount;
 
+        healthBar.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
+
+        if (playerCurrentHealth <= 0)
+        {
+            Debug.Log("Player Dead");
+        }
+
+
+    }
 
 }
