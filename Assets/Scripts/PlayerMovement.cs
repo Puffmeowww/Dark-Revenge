@@ -33,6 +33,9 @@ public class PlayerMovement : MonoBehaviour
     //Player Sprite
     SpriteRenderer playerSprite;
 
+    public float attackInterval = 0.8f;
+    private float lastAttackTime; 
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -41,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
         playerSprite = GetComponent<SpriteRenderer>();
 
         loseScreen.enabled = false;
+
+        lastAttackTime = -attackInterval;
     }
 
 
@@ -48,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //if normal attack
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.time - lastAttackTime >= attackInterval)
         {
             animator.SetBool("Attack1",true);
 
@@ -56,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
             audioSource.clip = swordAudio;
             audioSource.Play();
             Attack();
+            lastAttackTime = Time.time;
         }
 
         else

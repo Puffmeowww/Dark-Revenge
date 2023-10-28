@@ -20,6 +20,7 @@ public class SceneManage : MonoBehaviour
     public void RestartGame()
     {
         print("Restart");
+        Resources.UnloadUnusedAssets();
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }

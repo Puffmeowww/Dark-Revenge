@@ -139,6 +139,8 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case State.Dead:
+
+                
                 animator.SetBool("IsMove", false);
                 animator.SetTrigger("Death");
   
@@ -208,6 +210,7 @@ public class EnemyAI : MonoBehaviour
         if (enemyCurrentHealth <= 0)
         {
             state = State.Dead;
+            CoinControl.AddCoin(10);
             return;
         }
 
