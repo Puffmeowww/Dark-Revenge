@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -27,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     //Health Bar
     FloatingHealthBar healthBar;
 
+    public Canvas loseScreen;
 
     //Player Sprite
     SpriteRenderer playerSprite;
@@ -37,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         playerSprite = GetComponent<SpriteRenderer>();
+
+        loseScreen.enabled = false;
     }
 
 
@@ -88,16 +92,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-/*    private void FlipCharacter(float direction)
-    {
-        Vector3 scale = transform.localScale;
-        scale.x = direction;
-        transform.localScale = scale;
-    }*/
-
-
-
-
     /*
      * 
      * Damage funtions
@@ -122,10 +116,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (playerCurrentHealth <= 0)
         {
-            animator.SetBool("Death", true);
+            animator.SetTrigger("Death");
+            StartCoroutine(PauseAfterTwoSeconds());
+
         }
 
         animator.SetBool("Hurt", true);
     }
+
+    IEnumerator PauseAfterTwoSeconds()
+    {
+        yield return new WaitForSeconds(1);
+        loseScreen.enabled = true;
+        this.enabled = false;
+        
+    }
+
+
 
 }

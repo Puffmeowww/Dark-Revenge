@@ -143,6 +143,8 @@ public class EnemyAI : MonoBehaviour
                 animator.SetTrigger("Death");
   
                 Destroy(healthCanvas);
+
+
                 break;
 
             case State.Hurt:
@@ -150,6 +152,8 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
+
+
 
     private Vector3 GetRoamingPosition()
     {
