@@ -5,10 +5,11 @@ using UnityEngine;
 public class EnemyPathfinding : MonoBehaviour
 {
     //Movement Speed
-    public float speed = 10.0f;
+    public float speed = 1.0f;
     Coroutine moveCoroutine;
     int targetIndex;
     Vector3[] path;
+    PathRequestManager pathRequestManager;
 
     //Animator
     private Animator animator;
@@ -16,12 +17,13 @@ public class EnemyPathfinding : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        pathRequestManager = GetComponent<PathRequestManager>();
     }
 
 
     public void MoveTo(Vector3 PFtargetPosition)
     {
-        PathRequestManager.RequestPath(transform.position, PFtargetPosition, OnPathFound);
+        pathRequestManager.RequestPath(transform.position, PFtargetPosition, OnPathFound);
     }
 
     //Callback method that is called when a path is found

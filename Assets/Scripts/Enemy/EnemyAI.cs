@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour
 
     //Health Bar
     FloatingHealthBar healthBar;
+    public GameObject healthCanvas;
 
     //Enemy Roaming
     private Vector3 startingPosition;
@@ -87,8 +88,7 @@ public class EnemyAI : MonoBehaviour
             default:
             case State.Roaming:
 
-                //Debug.Log("Roaming");
-
+                pathfindingMovement.speed = 1f;
                 pathfindingMovement.MoveTo(roamPosition);
                 float reachedPositionDistance = 2f;
                 if (Vector3.Distance(transform.position, roamPosition) < reachedPositionDistance)
@@ -105,10 +105,10 @@ public class EnemyAI : MonoBehaviour
                 FindTarget();
                 break;
 
+
             case State.ChaseTarget:
 
-                //Debug.Log("Chasing Player");
-
+                pathfindingMovement.speed = 2f;
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
 
@@ -118,12 +118,9 @@ public class EnemyAI : MonoBehaviour
                 break;
 
 
-
             case State.Attack:
 
-
                 animator.SetTrigger("Attack");
-
                 FlipFace(player.transform.position, transform.position);
 
                 if (audioSource.isPlaying == false)
@@ -131,7 +128,6 @@ public class EnemyAI : MonoBehaviour
                     audioSource.clip = attackAudio;
                     audioSource.Play();
                 }
-
 
                 if (Time.time > nextAttackTime)
                 {
@@ -142,25 +138,17 @@ public class EnemyAI : MonoBehaviour
                 FindTarget();
                 break;
 
-
-
             case State.Dead:
                 animator.SetBool("IsMove", false);
-
                 animator.SetTrigger("Death");
+  
+                Destroy(healthCanvas);
                 break;
 
-
             case State.Hurt:
-
                 animator.SetBool("IsMove", false);
                 break;
         }
-
-       
-
-
-
     }
 
     private Vector3 GetRoamingPosition()
@@ -202,10 +190,7 @@ public class EnemyAI : MonoBehaviour
         else
         {
             state = State.Roaming;
-        }
-
-
-        
+        }       
     }
 
 
@@ -213,7 +198,6 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         enemyCurrentHealth -= damageAmount;
-
 
         healthBar.UpdateHealthBar(enemyCurrentHealth, enemyMaxHealth);
 

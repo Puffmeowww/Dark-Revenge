@@ -7,7 +7,7 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour
 {
     //A Request manager for pathfindiing
-    PathRequestManager requestManager;
+    //PathRequestManager requestManager;
 
     //The grid on the map
     AGrid grid;
@@ -15,11 +15,11 @@ public class Pathfinding : MonoBehaviour
     void Awake()
     {
         //Get the request manager and grid
-        requestManager = GetComponent<PathRequestManager>();
+        //requestManager = GetComponent<PathRequestManager>();
         grid = GetComponent<AGrid>();
     }
 
-    IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition)
+    IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition, PathRequestManager requestManager)
     {
         //All the waypoints in the path
         Vector3[] waypoints = new Vector3[0];
@@ -92,6 +92,7 @@ public class Pathfinding : MonoBehaviour
         }
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
 
+        Resources.UnloadUnusedAssets();
     }
 
     //Calculate distance between two nodes
@@ -145,9 +146,9 @@ public class Pathfinding : MonoBehaviour
     }
 
     //Called by PathRequestManager and start the coroutine
-    public void StartFindPath(Vector3 startPos, Vector3 targetPos)
+    public void StartFindPath(Vector3 startPos, Vector3 targetPos, PathRequestManager requestManager)
     {
-        StartCoroutine(FindPath(startPos, targetPos));
+        StartCoroutine(FindPath(startPos, targetPos, requestManager));
     }
 
 

@@ -11,8 +11,9 @@ public class PathRequestManager : MonoBehaviour
     //The current pathfinding request being processed
     PathRequest currentPathRequest;
 
+
     //Make the manager accessible from other scripts without creating an instance
-    static PathRequestManager instance;
+    //static PathRequestManager instance;
     Pathfinding pathfinding;
 
     //Check if the manager is currently processing a pathfinding request.
@@ -20,16 +21,15 @@ public class PathRequestManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
-        pathfinding = GetComponent<Pathfinding>();
+        pathfinding = GameObject.Find("A*").GetComponent<Pathfinding>();
     }
 
     //It creates a new PathRequest object, enqueues it in the queue, and tries to process the next request.
-    public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback)
+    public void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback)
     {
         PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
-        instance.pathRequestQueue.Enqueue(newRequest);
-        instance.TryProcessNext();
+        pathRequestQueue.Enqueue(newRequest);
+        TryProcessNext();
     }
 
     //Process the next request
@@ -39,7 +39,7 @@ public class PathRequestManager : MonoBehaviour
         {
             currentPathRequest = pathRequestQueue.Dequeue();
             isProcessingPath = true;
-            pathfinding.StartFindPath(currentPathRequest.pathStart, currentPathRequest.pathEnd);
+            pathfinding.StartFindPath(currentPathRequest.pathStart, currentPathRequest.pathEnd, this);
         }
     }
 
