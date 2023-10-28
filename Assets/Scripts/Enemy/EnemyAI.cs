@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour
 
     //Pathfinding
     private EnemyPathfinding pathfindingMovement;
-    public GameObject player;
+    private GameObject player;
 
     //Animator
     private Animator animator;
@@ -66,6 +66,7 @@ public class EnemyAI : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         enemySprite = GetComponent<SpriteRenderer>();
+        player = GameObject.Find("player");
         //Initialize enemy state
         state = State.Roaming;
 
@@ -99,16 +100,7 @@ public class EnemyAI : MonoBehaviour
                     roamPosition = GetRoamingPosition();
                 }
 
-                //animator.SetBool("IsMove", true);
-
-                if ((roamPosition - transform.position).x > 0)
-                {
-                    enemySprite.flipX = true;
-                }
-                else
-                {
-                    enemySprite.flipX = false;
-                }
+                FlipFace(roamPosition, transform.position);
 
                 FindTarget();
                 break;
@@ -120,14 +112,7 @@ public class EnemyAI : MonoBehaviour
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
 
-                if ((player.transform.position - transform.position).x > 0)
-                {
-                    enemySprite.flipX = true;
-                }
-                else
-                {
-                    enemySprite.flipX = false;
-                }
+                FlipFace(player.transform.position, transform.position);
 
                 FindTarget();
                 break;
@@ -136,38 +121,28 @@ public class EnemyAI : MonoBehaviour
 
             case State.Attack:
 
-                //Debug.Log("Attack");
-
 
                 animator.SetTrigger("Attack");
 
-                if ((player.transform.position - transform.position).x > 0)
-                {
-                    enemySprite.flipX = true;
-                }
-                else
-                {
-                    enemySprite.flipX = false;
-                }
+                FlipFace(player.transform.position, transform.position);
 
-                if(audioSource.isPlaying == false)
+                if (audioSource.isPlaying == false)
                 {
                     audioSource.clip = attackAudio;
                     audioSource.Play();
                 }
 
-                
 
                 if (Time.time > nextAttackTime)
                 {
-                    state = State.Attack;
                     nextAttackTime = Time.time + attackRate;
-                    Attack();
-                    
+                    Attack();   
                 }
                 
                 FindTarget();
                 break;
+
+
 
             case State.Dead:
                 animator.SetBool("IsMove", false);
@@ -179,8 +154,6 @@ public class EnemyAI : MonoBehaviour
             case State.Hurt:
 
                 animator.SetBool("IsMove", false);
-
-
                 break;
         }
 
@@ -192,7 +165,7 @@ public class EnemyAI : MonoBehaviour
 
     private Vector3 GetRoamingPosition()
     {
-        return startingPosition + GetRandomDir() * Random.Range(3f, 10f);
+        return startingPosition + GetRandomDir() * Random.Range(3f, 5f);
     }
 
     public static Vector3 GetRandomDir()
@@ -201,17 +174,19 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-
+    //Check the distance between enemy and player
     private void FindTarget()
     {
 
+        //In attack range
         if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
         {
             state = State.Attack;
             return;
         }
 
-        if (Vector3.Distance(transform.position,player.transform.position) < targetRange)
+        //In chase range
+        else if (Vector3.Distance(transform.position,player.transform.position) < targetRange)
         {
 
             if (audioSource.isPlaying == false)
@@ -223,12 +198,18 @@ public class EnemyAI : MonoBehaviour
             state = State.ChaseTarget;
         }
 
+        //No target in range
+        else
+        {
+            state = State.Roaming;
+        }
+
 
         
     }
 
 
-
+    //Take damage from the player
     public void TakeDamage(float damageAmount)
     {
         enemyCurrentHealth -= damageAmount;
@@ -248,7 +229,7 @@ public class EnemyAI : MonoBehaviour
         
     }
 
-
+    //Attack
     private void Attack()
     {
         Collider2D [] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
@@ -258,6 +239,20 @@ public class EnemyAI : MonoBehaviour
             player.GetComponent<PlayerMovement>().TakeDamage(enemyDamage);
         }
         
+    }
+
+
+    //Make enemy always face the target direction
+    private void FlipFace(Vector3 targetPos, Vector3 currentPos)
+    {
+        if ((targetPos - currentPos).x > 0)
+        {
+            enemySprite.flipX = true;
+        }
+        else
+        {
+            enemySprite.flipX = false;
+        }
     }
 
 

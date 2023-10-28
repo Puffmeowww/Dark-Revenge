@@ -18,10 +18,6 @@ public class EnemyPathfinding : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
-    {
-        
-    }
 
     public void MoveTo(Vector3 PFtargetPosition)
     {
