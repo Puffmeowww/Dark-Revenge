@@ -296,7 +296,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 34fcb2356dd1a1243b80752d2a23dc68, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.523
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -388,6 +388,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3226220605640614148, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.7843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226220605640614148, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.7843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226220605640614148, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.7843138
+      objectReference: {fileID: 0}
     - target: {fileID: 3972587811912206240, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -427,6 +439,18 @@ PrefabInstance:
     - target: {fileID: 3972587811912206240, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768997372948982703, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.7843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768997372948982703, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.7843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768997372948982703, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.7843138
       objectReference: {fileID: 0}
     - target: {fileID: 8249273191470482334, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
       propertyPath: m_Name
