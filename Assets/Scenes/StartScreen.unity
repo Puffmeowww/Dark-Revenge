@@ -428,22 +428,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4691226070155518953, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4691226070155518953, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2088634778}
-    - target: {fileID: 4691226070155518953, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 4691226070155518953, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SceneManage, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 8249273191470482334, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
       propertyPath: m_Name
       value: StartScreen
@@ -453,17 +437,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
---- !u!114 &2088634778 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6512797275580170064, guid: f648c99463d2b5545b4d78c2ec1f2dbe, type: 3}
-  m_PrefabInstance: {fileID: 1249287831}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e26ea04d7cf5604cac04a17c743a83b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

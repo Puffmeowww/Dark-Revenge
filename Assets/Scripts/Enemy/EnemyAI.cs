@@ -13,6 +13,9 @@ public class EnemyAI : MonoBehaviour
     FloatingHealthBar healthBar;
     public GameObject healthCanvas;
 
+    //Warning canvas
+    public GameObject WarningCanvas;
+
     //Enemy Roaming
     private Vector3 startingPosition;
     private Vector3 roamPosition;
@@ -70,6 +73,8 @@ public class EnemyAI : MonoBehaviour
         player = GameObject.Find("player");
         //Initialize enemy state
         state = State.Roaming;
+
+        WarningCanvas.SetActive(false);
     }
 
     private void Start()
@@ -137,7 +142,7 @@ public class EnemyAI : MonoBehaviour
 
             case State.Dead:
 
-                
+                WarningCanvas.SetActive(false);
                 animator.SetBool("IsMove", false);
                 animator.SetTrigger("Death");
   
@@ -172,6 +177,8 @@ public class EnemyAI : MonoBehaviour
         //In attack range
         if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
         {
+
+            WarningCanvas.SetActive(false);
             state = State.Attack;
             return;
         }
@@ -187,11 +194,13 @@ public class EnemyAI : MonoBehaviour
                 
             }
             state = State.ChaseTarget;
+            WarningCanvas.SetActive(true);
         }
 
         //No target in range
         else
         {
+            WarningCanvas.SetActive(false);
             state = State.Roaming;
         }       
     }
