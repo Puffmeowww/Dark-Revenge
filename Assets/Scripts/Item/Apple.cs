@@ -20,7 +20,6 @@ public class Apple : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        print("trigger");
         if (other.CompareTag("Player"))
         {
             playerMovement.Recover(RecoverAmount);

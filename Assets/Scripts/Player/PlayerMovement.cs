@@ -28,13 +28,23 @@ public class PlayerMovement : MonoBehaviour
     //Health Bar
     FloatingHealthBar healthBar;
 
+
+    //LoseScreen
     public Canvas loseScreen;
 
     //Player Sprite
     SpriteRenderer playerSprite;
 
+
+    //Attack Interval
     public float attackInterval = 0.8f;
-    private float lastAttackTime; 
+    private float lastAttackTime;
+
+    EnemySpawner enemySpawner;
+
+    //Enemy Respawn time
+    public float respawnTime;
+
 
     void Start()
     {
@@ -44,6 +54,9 @@ public class PlayerMovement : MonoBehaviour
         playerSprite = GetComponent<SpriteRenderer>();
 
         loseScreen.enabled = false;
+
+        GameObject spawner = GameObject.Find("EnemySpawner");
+        enemySpawner = spawner.GetComponent<EnemySpawner>();
 
         lastAttackTime = -attackInterval;
     }
@@ -100,10 +113,9 @@ public class PlayerMovement : MonoBehaviour
 
     /*
      * 
-     * Damage funtions
+     * Combat funtions
      * 
      */
-
     private void Attack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
@@ -129,7 +141,6 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetBool("Hurt", true);
     }
-
     public void Recover(float recoverAmount)
     {
         playerCurrentHealth += recoverAmount;
@@ -140,7 +151,6 @@ public class PlayerMovement : MonoBehaviour
         healthBar.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
     }
 
-
     IEnumerator PauseAfterTwoSeconds()
     {
         yield return new WaitForSeconds(1);
@@ -149,6 +159,19 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+
+    //When player killed enemy, spawn a new enemy
+    public void KilledEnemy()
+    {
+        StartCoroutine(SpawnEnemyWithDelay(respawnTime));
+    }
+
+    private IEnumerator SpawnEnemyWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        enemySpawner.SpawnEnemy();
+    }
 
 
 }
