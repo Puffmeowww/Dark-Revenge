@@ -46,7 +46,7 @@ public class EnemyAI : MonoBehaviour
 
     //Enemy Sprite
     SpriteRenderer enemySprite;
-
+                                    
 
     //State Machine
     private enum State
@@ -70,8 +70,6 @@ public class EnemyAI : MonoBehaviour
         player = GameObject.Find("player");
         //Initialize enemy state
         state = State.Roaming;
-
-        
     }
 
     private void Start()
@@ -111,7 +109,6 @@ public class EnemyAI : MonoBehaviour
                 pathfindingMovement.speed = 2f;
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
-
                 FlipFace(player.transform.position, transform.position);
 
                 FindTarget();
@@ -228,8 +225,7 @@ public class EnemyAI : MonoBehaviour
         foreach (Collider2D player in hitPlayer)
         {
             player.GetComponent<PlayerMovement>().TakeDamage(enemyDamage);
-        }
-        
+        }     
     }
 
 

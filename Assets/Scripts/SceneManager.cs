@@ -17,11 +17,23 @@ public class SceneManage : MonoBehaviour
         
     }
 
+    public void StartGame()
+    {
+        SceneManager.LoadScene("GameScene");
+    }
+
     public void RestartGame()
     {
-        print("Restart");
         Resources.UnloadUnusedAssets();
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+
+
 }

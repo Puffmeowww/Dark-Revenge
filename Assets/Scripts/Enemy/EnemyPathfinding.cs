@@ -42,13 +42,10 @@ public class EnemyPathfinding : MonoBehaviour
             moveCoroutine = StartCoroutine("FollowPath");
             animator.SetBool("IsMove", true);
         }
-
-        //Test
         else
         {
             animator.SetBool("IsMove", false);
         }
-        //Test
 
 
     }
