@@ -46,6 +46,8 @@ public class EnemyAI : MonoBehaviour
     public AudioClip attackAudio;
     public AudioClip findTargetAudio;
 
+    PlayerMovement playerMovement;
+
 
     //Enemy Sprite
     SpriteRenderer enemySprite;
@@ -71,6 +73,7 @@ public class EnemyAI : MonoBehaviour
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         enemySprite = GetComponent<SpriteRenderer>();
         player = GameObject.Find("player");
+        playerMovement = player.GetComponent<PlayerMovement>();
         //Initialize enemy state
         state = State.Roaming;
 
@@ -147,6 +150,8 @@ public class EnemyAI : MonoBehaviour
                 animator.SetTrigger("Death");
   
                 Destroy(healthCanvas);
+                Destroy(gameObject);
+                this.enabled = false;
 
 
                 break;
@@ -215,6 +220,7 @@ public class EnemyAI : MonoBehaviour
 
         if (enemyCurrentHealth <= 0)
         {
+            playerMovement.KilledEnemy();
             state = State.Dead;
             CoinControl.AddCoin(10);
             return;
