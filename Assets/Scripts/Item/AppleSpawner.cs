@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class AppleSpawner : MonoBehaviour
 {
 
-    public GameObject enemyPrefab;
+    public GameObject applePrefab;
     public Transform player;
 
     AGrid grid;
 
-    public float spawnDistance = 5.0f; 
+    public float spawnDistance = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,32 +19,41 @@ public class EnemySpawner : MonoBehaviour
         grid = AStarObject.GetComponent<AGrid>();
     }
 
-
-
-    public void SpawnEnemy()
+    // Update is called once per frame
+    void Update()
     {
 
+        GameObject[] appleList = GameObject.FindGameObjectsWithTag("Apple");
 
+        if (appleList.Length == 0 && player.gameObject.GetComponent<PlayerMovement>().playerCurrentHealth <= 50)
+        {
+            SpawnApple();
+            Debug.Log("Spawn Apple");
+        }
+        else
+        {
+        }
+    }
+
+    public void SpawnApple()
+    {
         Vector3 spawnPosition = default;
         ANode spawnNode = default;
         while (true)
         {
-            //spawnPosition = player.position + Random.insideUnitSphere * spawnDistance;
             spawnPosition = CalculateRandomPos();
 
             spawnNode = grid.NodeFromWorldPoint(spawnPosition);
 
-            if(spawnNode.walkable)
+            if (spawnNode.walkable)
             {
                 break;
             }
 
-
         }
 
-        spawnPosition.z = 0.0f; 
-
-        GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        spawnPosition.z = 0.0f;
+        GameObject newApple = Instantiate(applePrefab, spawnPosition, Quaternion.identity);
 
     }
 
@@ -56,12 +65,10 @@ public class EnemySpawner : MonoBehaviour
         float randomRadius = Random.Range(0f, spawnDistance);
 
 
-        Vector3 playerPosition = player.position; 
+        Vector3 playerPosition = player.position;
         float x = playerPosition.x + randomRadius * Mathf.Cos(randomAngle * Mathf.Deg2Rad);
         float z = playerPosition.y + randomRadius * Mathf.Sin(randomAngle * Mathf.Deg2Rad);
-        float y = playerPosition.z; 
+        float y = playerPosition.z;
         return new Vector3(x, y, z);
     }
-
-
 }
