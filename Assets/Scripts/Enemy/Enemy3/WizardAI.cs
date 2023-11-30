@@ -5,8 +5,13 @@ using UnityEngine;
 public class WizardAI : EnemyAI
 {
 
-    protected State state;
-    protected enum State
+    public float magicIntervalTime = 3;
+    public GameObject projectilePrefab;
+    private bool isSpawning = false;
+
+
+    protected WizardState wizardState;
+    protected enum WizardState
     {
         UseMagic,
         ChaseTarget,
@@ -26,7 +31,7 @@ public class WizardAI : EnemyAI
         player = GameObject.Find("player");
         playerMovement = player.GetComponent<PlayerMovement>();
         //Initialize enemy state
-        state = State.UseMagic;
+        wizardState = WizardState.UseMagic;
 
         WarningCanvas.SetActive(false);
     }
@@ -36,19 +41,56 @@ public class WizardAI : EnemyAI
      
     }
 
+    IEnumerator SpawnProjectile()
+    {
+        isSpawning = true;
+
+        while (true)
+        {
+            //Debug.Log("Spawn");
+            SetProjectile(new Vector3(1, 0, 0));
+            SetProjectile(new Vector3(1, 1, 0));
+
+            SetProjectile(new Vector3(0, 1, 0));
+            SetProjectile(new Vector3(-1, 1, 0));
+
+            SetProjectile(new Vector3(-1, 0, 0));
+            SetProjectile(new Vector3(-1, -1, 0));
+
+            SetProjectile(new Vector3(0, -1, 0));
+            SetProjectile(new Vector3(1, -1, 0));
+
+            yield return new WaitForSeconds(magicIntervalTime);
+        }
+        isSpawning = false;
+    }
+
+    public void SetProjectile(Vector3 direction)
+    {
+        GameObject newObject = Instantiate(projectilePrefab,transform.position,transform.rotation);
+        Projectile pj = newObject.GetComponent<Projectile>();
+        pj.direction = direction;
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-        switch (state)
+        switch (wizardState)
         {
             default:
-            case State.UseMagic:
+            case WizardState.UseMagic:
 
-              
+                if (!isSpawning)
+            {
+                StartCoroutine(SpawnProjectile());
+            }
+
+
                 break;
 
 
-            case State.ChaseTarget:
+            case WizardState.ChaseTarget:
 
                 pathfindingMovement.speed = 2f;
                 pathfindingMovement.MoveTo(player.transform.position);
@@ -59,7 +101,7 @@ public class WizardAI : EnemyAI
                 break;
 
 
-            case State.MeleeAttack:
+            case WizardState.MeleeAttack:
 
                 animator.SetTrigger("Attack");
                 FlipFace(player.transform.position, transform.position);
@@ -79,7 +121,7 @@ public class WizardAI : EnemyAI
                 FindTarget();
                 break;
 
-            case State.Dead:
+            case WizardState.Dead:
 
                 WarningCanvas.SetActive(false);
                 animator.SetBool("IsMove", false);
@@ -92,7 +134,7 @@ public class WizardAI : EnemyAI
 
                 break;
 
-            case State.Hurt:
+            case WizardState.Hurt:
                 animator.SetBool("IsMove", false);
                 break;
         }
