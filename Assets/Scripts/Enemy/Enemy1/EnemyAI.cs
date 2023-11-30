@@ -10,30 +10,30 @@ public class EnemyAI : MonoBehaviour
     public float enemyMaxHealth = 100f;
 
     //Health Bar
-    FloatingHealthBar healthBar;
+    protected FloatingHealthBar healthBar;
     public GameObject healthCanvas;
 
     //Warning canvas
     public GameObject WarningCanvas;
 
     //Enemy Roaming
-    private Vector3 startingPosition;
-    private Vector3 roamPosition;
+    protected Vector3 startingPosition;
+    protected Vector3 roamPosition;
 
     //Pathfinding
-    private EnemyPathfinding pathfindingMovement;
-    private GameObject player;
+    protected EnemyPathfinding pathfindingMovement;
+    protected GameObject player;
 
     //Animator
-    private Animator animator;
+    protected Animator animator;
 
     //Detect Range
     public float targetRange = 4f;
     public float attackRange = 1.5f;
 
     //Attack Time
-    private float nextAttackTime;
-    private float attackRate = 1.5f;
+    protected float nextAttackTime;
+    protected float attackRate = 1.5f;
 
     //Attack damage
     public Transform attackPoint;
@@ -41,20 +41,20 @@ public class EnemyAI : MonoBehaviour
     public float enemyDamage = 5f;
 
     //Audio resource
-    AudioSource audioSource;
+    protected AudioSource audioSource;
 
     public AudioClip attackAudio;
     public AudioClip findTargetAudio;
 
-    PlayerMovement playerMovement;
+    protected PlayerMovement playerMovement;
 
 
     //Enemy Sprite
-    SpriteRenderer enemySprite;
-                                    
+    protected SpriteRenderer enemySprite;
+
 
     //State Machine
-    private enum State
+    protected enum State
     {
         Roaming,
         ChaseTarget,
@@ -63,9 +63,9 @@ public class EnemyAI : MonoBehaviour
         Hurt,
     }
 
-    private State state;
+    protected State state;
 
-    private void Awake()
+    protected void Awake()
     {
         pathfindingMovement = GetComponent<EnemyPathfinding>();
         animator = GetComponent<Animator>();
@@ -80,7 +80,7 @@ public class EnemyAI : MonoBehaviour
         WarningCanvas.SetActive(false);
     }
 
-    private void Start()
+    protected void Start()
     {
         startingPosition = transform.position;
         roamPosition = GetRoamingPosition();
@@ -164,7 +164,7 @@ public class EnemyAI : MonoBehaviour
 
 
 
-    private Vector3 GetRoamingPosition()
+    protected Vector3 GetRoamingPosition()
     {
         return startingPosition + GetRandomDir() * Random.Range(3f, 5f);
     }
@@ -176,7 +176,7 @@ public class EnemyAI : MonoBehaviour
 
 
     //Check the distance between enemy and player
-    private void FindTarget()
+    protected void FindTarget()
     {
 
         //In attack range
@@ -233,7 +233,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Attack
-    private void Attack()
+    protected void Attack()
     {
         Collider2D [] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
 
@@ -245,7 +245,7 @@ public class EnemyAI : MonoBehaviour
 
 
     //Make enemy always face the target direction
-    private void FlipFace(Vector3 targetPos, Vector3 currentPos)
+    protected void FlipFace(Vector3 targetPos, Vector3 currentPos)
     {
         if ((targetPos - currentPos).x > 0)
         {
