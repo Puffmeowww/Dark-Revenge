@@ -54,16 +54,18 @@ public class EnemyAI : MonoBehaviour
 
 
     //State Machine
-    protected enum State
+    public enum State
     {
         Roaming,
         ChaseTarget,
         Attack,
         Dead,
         Hurt,
+        UseMagic,
+        MeleeAttack,
     }
 
-    protected State state;
+    public State state;
 
     protected void Awake()
     {
@@ -176,7 +178,7 @@ public class EnemyAI : MonoBehaviour
 
 
     //Check the distance between enemy and player
-    protected void FindTarget()
+    protected virtual void FindTarget()
     {
 
         //In attack range
@@ -245,7 +247,7 @@ public class EnemyAI : MonoBehaviour
 
 
     //Make enemy always face the target direction
-    protected void FlipFace(Vector3 targetPos, Vector3 currentPos)
+    protected virtual void FlipFace(Vector3 targetPos, Vector3 currentPos)
     {
         if ((targetPos - currentPos).x > 0)
         {

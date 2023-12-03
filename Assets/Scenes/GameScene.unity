@@ -101753,8 +101753,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2393525219953848494, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
-      propertyPath: magicIntervalTime
+      propertyPath: attackPoint
+      value: 
+      objectReference: {fileID: 1962785701}
+    - target: {fileID: 2393525219953848494, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
+      propertyPath: attackRange
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2393525219953848494, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
+      propertyPath: targetRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2393525219953848494, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
+      propertyPath: magicIntervalTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3686330834342556921, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -131180,6 +131192,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924323798}
   m_CullTransparentMesh: 1
+--- !u!4 &1962785701 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8706980253018115402, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
+  m_PrefabInstance: {fileID: 1338618713}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8113013697538220101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131238,15 +131255,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5073985050813436296, guid: e54ce5686fe502446b086eba52131a13, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5073985050813436296, guid: e54ce5686fe502446b086eba52131a13, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7188988746468030187, guid: e54ce5686fe502446b086eba52131a13, type: 3}
       propertyPath: m_Name
       value: EnemyPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188988746468030187, guid: e54ce5686fe502446b086eba52131a13, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

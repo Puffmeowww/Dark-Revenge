@@ -5,20 +5,11 @@ using UnityEngine;
 public class WizardAI : EnemyAI
 {
 
-    public float magicIntervalTime = 3;
+    public float magicIntervalTime = 3f;
     public GameObject projectilePrefab;
     private bool isSpawning = false;
 
-
-    protected WizardState wizardState;
-    protected enum WizardState
-    {
-        UseMagic,
-        ChaseTarget,
-        MeleeAttack,
-        Dead,
-        Hurt,
-    }
+    private float timer = 0f;
 
 
     void Awake()
@@ -31,23 +22,23 @@ public class WizardAI : EnemyAI
         player = GameObject.Find("player");
         playerMovement = player.GetComponent<PlayerMovement>();
         //Initialize enemy state
-        wizardState = WizardState.UseMagic;
+        state = EnemyAI.State.UseMagic;
 
         WarningCanvas.SetActive(false);
     }
 
     void Start()
     {
-     
+        StartCoroutine("SpawnProjectile");
+        isSpawning = true;
     }
 
     IEnumerator SpawnProjectile()
     {
-        isSpawning = true;
+        //isSpawning = true;
 
         while (true)
         {
-            //Debug.Log("Spawn");
             SetProjectile(new Vector3(1, 0, 0));
             SetProjectile(new Vector3(1, 1, 0));
 
@@ -62,7 +53,7 @@ public class WizardAI : EnemyAI
 
             yield return new WaitForSeconds(magicIntervalTime);
         }
-        isSpawning = false;
+        //isSpawning = false;
     }
 
     public void SetProjectile(Vector3 direction)
@@ -76,21 +67,19 @@ public class WizardAI : EnemyAI
     // Update is called once per frame
     void Update()
     {
-        switch (wizardState)
+        switch (state)
         {
             default:
-            case WizardState.UseMagic:
+            case EnemyAI.State.UseMagic:
 
-                if (!isSpawning)
-            {
-                StartCoroutine(SpawnProjectile());
-            }
-
-
+                FindTarget();
                 break;
 
 
-            case WizardState.ChaseTarget:
+            case EnemyAI.State.ChaseTarget:
+
+                isSpawning = false;
+                StopCoroutine("SpawnProjectile");
 
                 pathfindingMovement.speed = 2f;
                 pathfindingMovement.MoveTo(player.transform.position);
@@ -101,8 +90,12 @@ public class WizardAI : EnemyAI
                 break;
 
 
-            case WizardState.MeleeAttack:
+            case EnemyAI.State.MeleeAttack:
 
+                isSpawning = false;
+                StopCoroutine("SpawnProjectile");
+
+                animator.SetBool("IsMove", false);
                 animator.SetTrigger("Attack");
                 FlipFace(player.transform.position, transform.position);
 
@@ -121,7 +114,10 @@ public class WizardAI : EnemyAI
                 FindTarget();
                 break;
 
-            case WizardState.Dead:
+            case EnemyAI.State.Dead:
+
+                isSpawning = false;
+                StopCoroutine("SpawnProjectile");
 
                 WarningCanvas.SetActive(false);
                 animator.SetBool("IsMove", false);
@@ -134,9 +130,71 @@ public class WizardAI : EnemyAI
 
                 break;
 
-            case WizardState.Hurt:
+            case EnemyAI.State.Hurt:
+
+                isSpawning = false;
+                StopCoroutine("SpawnProjectile");
+
+                animator.SetTrigger("Hurt");
+
                 animator.SetBool("IsMove", false);
                 break;
+        }
+    }
+
+    protected override void FindTarget()
+    {
+
+        //In attack range
+        if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
+        {
+
+            WarningCanvas.SetActive(false);
+            state = EnemyAI.State.MeleeAttack;
+            return;
+        }
+
+        //In chase range
+        else if (Vector3.Distance(transform.position, player.transform.position) < targetRange)
+        {
+
+            if (audioSource.isPlaying == false)
+            {
+                audioSource.clip = findTargetAudio;
+                audioSource.Play();
+
+            }
+            state = EnemyAI.State.ChaseTarget;
+            WarningCanvas.SetActive(true);
+            return;
+        }
+
+        //No target in melee range, use magic
+        else
+        {
+            WarningCanvas.SetActive(false);
+            state = EnemyAI.State.UseMagic;
+
+            if(isSpawning == false)
+            {
+                StartCoroutine("SpawnProjectile");
+                isSpawning = true;
+            }
+
+            return;
+        }
+    }
+
+
+    protected override void FlipFace(Vector3 targetPos, Vector3 currentPos)
+    {
+        if ((targetPos - currentPos).x > 0)
+        {
+            enemySprite.flipX = false;
+        }
+        else
+        {
+            enemySprite.flipX = true;
         }
     }
 }
