@@ -15,8 +15,10 @@ public class PlayerMovement : MonoBehaviour
     //player attack variables
     public Transform attackPoint;
     public float attackRange = 1f;
-    public LayerMask enemyLayers;
-    public float playerDamage = 20f;
+    public LayerMask enemyLayer1;
+    public LayerMask enemyLayer2;
+    public float playerDamageEnemy1 = 20f;
+    public float playerDamageEnemy2 = 10f;
 
     AudioSource audioSource;
     public AudioClip swordAudio;
@@ -118,11 +120,19 @@ public class PlayerMovement : MonoBehaviour
      */
     private void Attack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
-        foreach(Collider2D enemy in hitEnemies)
+        Debug.Log("Player is attacking");
+        Collider2D[] hitEnemiesType1 = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer1);
+        foreach(Collider2D enemy1 in hitEnemiesType1)
         {
-            enemy.GetComponent<EnemyAI>().TakeDamage(playerDamage);
+            Debug.Log("Player is attacking Enemy 1");
+            enemy1.GetComponent<EnemyAI>().TakeDamage(playerDamageEnemy1);
+        }
+
+        Collider2D[] hitEnemiesType2 = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer2);
+        foreach(Collider2D enemy2 in hitEnemiesType2)
+        {
+            Debug.Log("Player is attacking Enemy 2");
+            enemy2.GetComponent<EnemyType2>().TakeDamage(playerDamageEnemy1);
         }
     }
 
