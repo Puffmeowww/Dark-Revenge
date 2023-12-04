@@ -513,7 +513,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.086942315, y: 0.6628587}
+  m_Offset: {x: 0.01641284, y: 0.08485699}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -524,7 +524,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0404251, y: 1.4655733}
+  m_Size: {x: 0.5963502, y: 0.71707356}
   m_EdgeRadius: 0
 --- !u!114 &2393525219953848494
 MonoBehaviour:
@@ -542,16 +542,17 @@ MonoBehaviour:
   enemyMaxHealth: 100
   healthCanvas: {fileID: 9097433727967501185}
   WarningCanvas: {fileID: 2173419736052929}
-  targetRange: 4
-  attackRange: 1.5
-  attackPoint: {fileID: 3686330834342556921}
+  targetRange: 2
+  attackRange: 1
+  attackPoint: {fileID: 8706980253018115402}
   playerLayers:
     serializedVersion: 2
     m_Bits: 128
   enemyDamage: 5
   attackAudio: {fileID: 8300000, guid: 1ed6f3149f4ad2f44bc4c963cc545722, type: 3}
   findTargetAudio: {fileID: 8300000, guid: 6a97e267ff6265641b186e00ee17173f, type: 3}
-  magicIntervalTime: 3
+  state: 0
+  magicIntervalTime: 2
   projectilePrefab: {fileID: 8994828079576201608, guid: 223f69f93464d2a488df05e3d64af702, type: 3}
 --- !u!82 &8026435304127978484
 AudioSource:
