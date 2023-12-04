@@ -5,8 +5,17 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
 
-    public GameObject enemyPrefab;
+    public GameObject enemy1Prefab;
+    public GameObject enemy2Prefab;
+    public GameObject enemy3Prefab;
+
+
     public Transform player;
+
+    //The probability of different enemy types
+    float enemy1P;
+    float enemy2P;
+    float enemy3P;
 
     AGrid grid;
 
@@ -29,9 +38,7 @@ public class EnemySpawner : MonoBehaviour
         ANode spawnNode = default;
         while (true)
         {
-            //spawnPosition = player.position + Random.insideUnitSphere * spawnDistance;
             spawnPosition = CalculateRandomPos();
-
             spawnNode = grid.NodeFromWorldPoint(spawnPosition);
 
             if(spawnNode.walkable)
@@ -42,9 +49,43 @@ public class EnemySpawner : MonoBehaviour
 
         }
 
-        spawnPosition.z = 0.0f; 
+        spawnPosition.z = 0.0f;
 
-        GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        int randomNumber = Random.Range(1, 101);
+        if (CoinControl.coinNum >= 0 && CoinControl.coinNum <= 30)
+        {
+            enemy1P = 70;
+            enemy2P = 20;
+            enemy3P = 10;
+        }
+        else if (CoinControl.coinNum > 30 && CoinControl.coinNum <= 80)
+        {
+            enemy1P = 50;
+            enemy2P = 30;
+            enemy3P = 20;
+        }
+        else
+        {
+            enemy1P = 20;
+            enemy2P = 30;
+            enemy3P = 50;
+        }
+
+
+        if(randomNumber <= enemy1P)
+        {
+            GameObject newEnemy = Instantiate(enemy1Prefab, spawnPosition, Quaternion.identity);
+        }
+        else if(randomNumber > enemy1P && randomNumber <= (enemy1P + enemy2P))
+        {
+            GameObject newEnemy = Instantiate(enemy2Prefab, spawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            GameObject newEnemy = Instantiate(enemy3Prefab, spawnPosition, Quaternion.identity);
+        }
+
+        
 
     }
 

@@ -8,7 +8,7 @@ public class CoinControl : MonoBehaviour
 {
 
     //public Text textComponent;
-    private static int coinNum;
+    public static int coinNum;
     TextMeshProUGUI textMeshPro;
 
     private static CoinControl instance;
