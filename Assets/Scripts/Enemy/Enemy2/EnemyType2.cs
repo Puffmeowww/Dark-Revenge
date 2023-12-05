@@ -57,12 +57,15 @@ public class EnemyType2 : EnemyAI
 
     // public float enemyDamage = 5f;
 
+    private float nextroamTime;
+
     private bool isDodging = false;
     private float dodgeDuration = 2.0f; // Adjust the duration as needed
     private float nextDodgeEndTime;
     private float dodgeSpeed = 5.0f;
     private int checkDodge;
     public float distanceToPlayer = 1f;
+
 
 
     protected void Awake()
@@ -97,15 +100,55 @@ public class EnemyType2 : EnemyAI
                 animator.SetTrigger("IsWalking");
                 pathfindingMovement.speed = 3f;
                 //Debug.Log("Step 1 Roaming");
+<<<<<<< Updated upstream
                 //Debug.Log("Start current pos" + transform.position);
+=======
+                Debug.Log("Start current pos" + transform.position);
+                Debug.Log("Roam current pos" + roamPosition);
+>>>>>>> Stashed changes
                 pathfindingMovement.MoveTo(roamPosition);
                 //CheckWallCollision();
-                float reachedPositionDistance = 1f;
+                float reachedPositionDistance = 4f;
                 if (Vector3.Distance(transform.position, roamPosition) < reachedPositionDistance)
                 {
+                    Debug.Log("New roam position after distance is less than 4");
                     roamPosition = GetRoamingPosition();
                     //Debug.Log("Step 2 Finding new roam position");
                 }
+                // Vector3 currentPosition = transform.position;
+                // Vector3 previousPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                // // if(Vector3.Distance(currentPosition, previousPosition)> 0.1f){
+                // //     Debug.Log("Enemy is moving");
+                // //     previousPosition = currentPosition;
+                // // }
+                // // else{
+                // //     Debug.Log("Enemy Stopped moving");
+                // // }
+
+                // float movementThreshold = 0.001f;  // Adjust the threshold as needed
+
+                // // Check squared distance to avoid using expensive square root
+                // float squaredDistance = (currentPosition - previousPosition).sqrMagnitude;
+
+                // if (squaredDistance > movementThreshold * movementThreshold)
+                // {
+                //     Debug.Log("Enemy is moving");
+                //     previousPosition = currentPosition;
+                // }
+                // else
+                // {
+                //     Debug.Log("Enemy Stopped moving");
+                // }
+
+                // Debug.Log("previous position -->"+ previousPosition);
+                // Debug.Log("Current pos -->"+ currentPosition);
+
+                // else if (Time.time > nextroamTime)
+                // {
+                //     Debug.Log("New roam position after wait");
+                //     nextroamTime = Time.time + 5f;
+                //     //Attack();   
+                // }
 
                 // else if(animator.GetBool("IsMove") == false)
                 // {
@@ -162,19 +205,22 @@ public class EnemyType2 : EnemyAI
                 break;
 
               case EnemyAI.State.Dodge:
-                // checkDodge = Random.Range(1, 10);
+                animator.SetTrigger("IsWalking");
+                checkDodge = Random.Range(1, 10);
+                Debug.Log("Random" + checkDodge);
                 // if(checkDodge % 2 == 0)
                 // {
-                //     //isDodging=true;
+                //     isDodging=true;
                 // }
                 // else
                 // {
                     
-                //     //Debug.Log("D
+                //     isDodging=false;
                 // }
-                // isDodging=true;
-                FindTarget();
-                //Dodge(isDodging);
+                isDodging=true;
+                Dodge(isDodging);
+                //FindTarget();
+                
                 break;
 
             //     Debug.Log("Inside Dodge state");
@@ -282,7 +328,7 @@ public class EnemyType2 : EnemyAI
 
     protected void Attack()
     {
-        Debug.Log("Attacking player");
+        //Debug.Log("Attacking player");
         animator.SetTrigger("IsAttacking");
         Collider2D [] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
 
@@ -294,24 +340,24 @@ public class EnemyType2 : EnemyAI
 
     public void TakeDamage(float damageAmount)
     {
-        Debug.Log("Enemy 2 attacked");
+        //Debug.Log("Enemy 2 attacked");
         enemyCurrentHealth -= damageAmount;
-        Debug.Log("Enemy Damaged");
+        //Debug.Log("Enemy Damaged");
         enemy2HealthBar.UpdateHealthBar(enemyCurrentHealth, enemyMaxHealth);
         
         if (enemyCurrentHealth <= 0)
         {
-            Debug.Log("Enemy 2 died");
+            //Debug.Log("Enemy 2 died");
             playerMovement.KilledEnemy();
             state = EnemyAI.State.Dead;
             CoinControl.AddCoin(10);
             return;
         }
-        // else if(enemyCurrentHealth<50)
-        // {
-        //     Debug.Log("Changing State to Dodge");
-        //     state = State.Dodge;
-        // }
+        else if(enemyCurrentHealth<80)
+        {
+            Debug.Log("Changing State to Dodge");
+            state = State.Dodge;
+        }
 
         //animator.SetTrigger("Hurt");
         
@@ -331,12 +377,20 @@ public class EnemyType2 : EnemyAI
             Vector3 targetPosition = transform.position - directionToPlayer.normalized * 6;
 
             // Move towards the target position
-            Debug.Log("Moving away from player");
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, dodgeSpeed * Time.deltaTime);
-            if(Vector3.Distance(transform.position,player.transform.position) > 5f)
+            
+            if(Vector3.Distance(transform.position,player.transform.position) < 10f)
+            {
+                Debug.Log("Moving away from player");
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, dodgeSpeed * Time.deltaTime);
+            }
+            if(Vector3.Distance(transform.position,player.transform.position) >= 10f)
             {
                 Debug.Log("Changing state to Roam after dodging");
-                state = EnemyAI.State.Roaming;
+                isDodging=false;
+                roamPosition = GetRoamingPosition();
+                //state = EnemyAI.State.Roaming;
+                FindTarget();
+                
             }
 
             
