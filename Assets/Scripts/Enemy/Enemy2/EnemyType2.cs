@@ -1,58 +1,68 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyType2 : MonoBehaviour
+public class EnemyType2 : EnemyAI
 {
-    public enum State
-    {
-        Roaming,
-        ChaseTarget,
-        Attack,
-        Dead,
-        Hurt,
-        Dodge,
-    }
+    // public enum State
+    // {
+    //     Roaming,
+    //     ChaseTarget,
+    //     Attack,
+    //     Dead,
+    //     Hurt,
+    //     Dodge,
+    // }
 
-    public State state;
+    //public State state;
 
-    protected EnemyPathfinding pathfindingMovement;
+    //protected EnemyPathfinding pathfindingMovement;
 
-    protected GameObject player;
+    //protected GameObject player;
 
-    public float attackRange = 1.5f;
+    //public float attackRange = 1.5f;
 
     //public GameObject WarningCanvas;
-    protected EnemyType2HealthBar healthBar;
-    public GameObject healthCanvas;
 
-    public float targetRange = 4f;
+    protected EnemyType2HealthBar enemy2HealthBar;
+    //public GameObject healthCanvas;
 
-    protected AudioSource audioSource;
-    public AudioClip findTargetAudio;
 
-    protected Animator animator;
+    //public float targetRange = 4f;
 
-    protected Vector3 startingPosition;
-    protected Vector3 roamPosition;
+    //protected AudioSource audioSource;
+    //public AudioClip findTargetAudio;
 
-    protected SpriteRenderer enemySprite;
+    //protected Animator animator;
+
+    //protected Vector3 startingPosition;
+    //protected Vector3 roamPosition;
+
+    //protected SpriteRenderer enemySprite;
     private bool iscollision;
-    protected float nextAttackTime;
-    protected float attackRate = 1.5f;
-    public Transform attackPoint;
+    // protected float nextAttackTime;
+    // protected float attackRate = 1.5f;
+    // public Transform attackPoint;
 
-    public LayerMask playerLayers;
+    // public LayerMask playerLayers;
 
-    public float enemyCurrentHealth = 100f;
+    // public float enemyCurrentHealth = 100f;
 
-    public float enemyMaxHealth = 100f;
+    // public float enemyMaxHealth = 100f;
 
-    protected PlayerMovement playerMovement;
+    // protected PlayerMovement playerMovement;
 
-    public AudioClip attackAudio;
+    // public AudioClip attackAudio;
 
-    public float enemyDamage = 5f;
+    // public float enemyDamage = 5f;
+
+    private bool isDodging = false;
+    private float dodgeDuration = 2.0f; // Adjust the duration as needed
+    private float nextDodgeEndTime;
+    private float dodgeSpeed = 5.0f;
+    private int checkDodge;
+    public float distanceToPlayer = 1f;
 
 
     protected void Awake()
@@ -60,12 +70,12 @@ public class EnemyType2 : MonoBehaviour
         pathfindingMovement = GetComponent<EnemyPathfinding>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        healthBar = GetComponentInChildren<EnemyType2HealthBar>();
+        enemy2HealthBar = GetComponentInChildren<EnemyType2HealthBar>();
         enemySprite = GetComponent<SpriteRenderer>();
         player = GameObject.Find("player");
         playerMovement = player.GetComponent<PlayerMovement>();
         //Initialize enemy state
-        state = State.Roaming;
+        state = EnemyAI.State.Roaming;
 
         //WarningCanvas.SetActive(false);
     }
@@ -79,22 +89,22 @@ public class EnemyType2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Current State: "+state);
         switch(state)
         {
             default:
-            case State.Roaming:
-
+            case EnemyAI.State.Roaming:
+                animator.SetTrigger("IsWalking");
                 pathfindingMovement.speed = 3f;
-                // Debug.Log("Roam 1 --" +roamPosition);
-                // Debug.Log("Start current pos" + transform.position);
+                Debug.Log("Step 1 Roaming");
+                //Debug.Log("Start current pos" + transform.position);
                 pathfindingMovement.MoveTo(roamPosition);
                 //CheckWallCollision();
                 float reachedPositionDistance = 1f;
                 if (Vector3.Distance(transform.position, roamPosition) < reachedPositionDistance)
                 {
                     roamPosition = GetRoamingPosition();
-                    // Debug.Log("Inside if current pos" + transform.position);
-                    // Debug.Log("Roam 2 --" +roamPosition);
+                    Debug.Log("Step 2 Finding new roam position");
                 }
 
                 // else if(animator.GetBool("IsMove") == false)
@@ -108,8 +118,9 @@ public class EnemyType2 : MonoBehaviour
                 FindTarget();
                 break;
 
-            case State.ChaseTarget:
-
+            case EnemyAI.State.ChaseTarget:
+                animator.SetTrigger("IsWalking");
+                Debug.Log("Moving towards player");
                 pathfindingMovement.speed = 2f;
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
@@ -118,9 +129,8 @@ public class EnemyType2 : MonoBehaviour
                 FindTarget();
                 break;
 
-            case State.Attack:
-
-                animator.SetTrigger("Attack");
+            case EnemyAI.State.Attack:
+                
                 FlipFace(player.transform.position, transform.position);
 
                 if (audioSource.isPlaying == false)
@@ -138,11 +148,11 @@ public class EnemyType2 : MonoBehaviour
                 FindTarget();
                 break;
 
-            case State.Dead:
-
+            case EnemyAI.State.Dead:
+                animator.SetTrigger("IsDead");
                 //WarningCanvas.SetActive(false);
-                animator.SetBool("IsMove", false);
-                animator.SetTrigger("Death");
+                //animator.SetBool("IsMove", false);
+                //animator.SetTrigger("Death");
   
                 Destroy(healthCanvas);
                 Destroy(gameObject);
@@ -151,13 +161,52 @@ public class EnemyType2 : MonoBehaviour
 
                 break;
 
+              case EnemyAI.State.Dodge:
+                // checkDodge = Random.Range(1, 10);
+                // if(checkDodge % 2 == 0)
+                // {
+                //     //isDodging=true;
+                // }
+                // else
+                // {
+                    
+                //     //Debug.Log("D
+                // }
+                // isDodging=true;
+                FindTarget();
+                //Dodge(isDodging);
+                break;
+
+            //     Debug.Log("Inside Dodge state");
+            //     checkDodge = Random.Range(1, 10);
+            //     //Debug.Log("Random value : "+checkDodge);
+            //     if(checkDodge % 2 == 0)
+            //     {
+            //         //Debug.Log("Dodging is true");
+            //         //isDodging=true;
+            //     }
+            //     else
+            //     {
+            //         //isDodging=false;
+            //         //Debug.Log("Dodging is False");
+            //     }
+            //     isDodging=true;
+            //     Dodge(isDodging);
+
+            //     // Transition back to Roaming after dodging
+            //     // if (Time.time > nextDodgeEndTime)
+            //     // {
+            //     //     state = State.Roaming;
+            //     // }
+            //     break;
+
         }
 
     }
 
     protected Vector3 GetRoamingPosition()
     {
-        return startingPosition + GetRandomDir() * Random.Range(1f, 20f);
+        return startingPosition + GetRandomDir() * Random.Range(1f, 15f);
     }
 
     public static Vector3 GetRandomDir()
@@ -179,14 +228,15 @@ public class EnemyType2 : MonoBehaviour
 
     protected virtual void FindTarget()
     {
-
+        Debug.Log("current state Inside Find target: "+state);
         //In attack range
         if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
         {
 
             //WarningCanvas.SetActive(false);
-            state = State.Attack;
-            return;
+            state = EnemyAI.State.Attack;
+            Debug.Log("current state inside 1st if: "+state);
+            //return;
         }
 
         //In chase range
@@ -199,7 +249,8 @@ public class EnemyType2 : MonoBehaviour
                 audioSource.Play();
                 
             }
-            state = State.ChaseTarget;
+            state = EnemyAI.State.ChaseTarget;
+            Debug.Log("current state inside 2nd if: "+state);
             //WarningCanvas.SetActive(true);
         }
 
@@ -207,7 +258,9 @@ public class EnemyType2 : MonoBehaviour
         else
         {
             //WarningCanvas.SetActive(false);
-            state = State.Roaming;
+            //roamPosition = GetRoamingPosition();
+            state = EnemyAI.State.Roaming;
+            Debug.Log("current state inside 3rd if: "+state);
         }       
     }
 
@@ -229,6 +282,8 @@ public class EnemyType2 : MonoBehaviour
 
     protected void Attack()
     {
+        Debug.Log("Attacking player");
+        animator.SetTrigger("IsAttacking");
         Collider2D [] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
 
         foreach (Collider2D player in hitPlayer)
@@ -241,20 +296,51 @@ public class EnemyType2 : MonoBehaviour
     {
         Debug.Log("Enemy 2 attacked");
         enemyCurrentHealth -= damageAmount;
-
-        healthBar.UpdateHealthBar(enemyCurrentHealth, enemyMaxHealth);
-
+        Debug.Log("Enemy Damaged");
+        enemy2HealthBar.UpdateHealthBar(enemyCurrentHealth, enemyMaxHealth);
+        
         if (enemyCurrentHealth <= 0)
         {
+            Debug.Log("Enemy 2 died");
             playerMovement.KilledEnemy();
-            state = State.Dead;
+            state = EnemyAI.State.Dead;
             CoinControl.AddCoin(10);
             return;
         }
+        // else if(enemyCurrentHealth<50)
+        // {
+        //     Debug.Log("Changing State to Dodge");
+        //     state = State.Dodge;
+        // }
 
-        state = State.Hurt;
-
-        animator.SetTrigger("Hurt");
+        //animator.SetTrigger("Hurt");
         
     }
+
+    private void Dodge(bool isDodging)
+    {
+        Debug.Log("Will it dodge -- "+ isDodging);
+        if (isDodging)
+        {
+            // Choose a random direction to dodge
+            Debug.Log("Dodging is true");
+            Vector3 directionToPlayer = player.transform.position - transform.position;
+
+
+            // Calculate the desired position away from the player
+            Vector3 targetPosition = transform.position - directionToPlayer.normalized * 6;
+
+            // Move towards the target position
+            Debug.Log("Moving away from player");
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, dodgeSpeed * Time.deltaTime);
+            if(Vector3.Distance(transform.position,player.transform.position) > 5f)
+            {
+                Debug.Log("Changing state to Roam after dodging");
+                state = EnemyAI.State.Roaming;
+            }
+
+            
+        }
+    }
 }
+
