@@ -41,11 +41,11 @@ public class EnemySpawner : MonoBehaviour
             spawnPosition = CalculateRandomPos();
             spawnNode = grid.NodeFromWorldPoint(spawnPosition);
 
-            if(spawnNode.walkable)
+            if (spawnNode.walkable)
             {
+                
                 break;
             }
-
 
         }
 
@@ -93,14 +93,20 @@ public class EnemySpawner : MonoBehaviour
     private Vector3 CalculateRandomPos()
     {
 
-        float randomAngle = Random.Range(0f, 360f);
-        float randomRadius = Random.Range(0f, spawnDistance);
+        /*        float randomAngle = Random.Range(0f, 360f);
+                float randomRadius = Random.Range(0f, spawnDistance);
 
 
-        Vector3 playerPosition = player.position; 
-        float x = playerPosition.x + randomRadius * Mathf.Cos(randomAngle * Mathf.Deg2Rad);
-        float z = playerPosition.y + randomRadius * Mathf.Sin(randomAngle * Mathf.Deg2Rad);
-        float y = playerPosition.z; 
+                Vector3 playerPosition = player.position; 
+                float x = playerPosition.x + randomRadius * Mathf.Cos(randomAngle * Mathf.Deg2Rad);
+                float z = playerPosition.y + randomRadius * Mathf.Sin(randomAngle * Mathf.Deg2Rad);
+                float y = playerPosition.z; */
+
+        Vector3 playerPosition = player.position;
+        float x = Random.Range((playerPosition.x - spawnDistance), (playerPosition.x + spawnDistance));
+        float y = Random.Range((playerPosition.y - spawnDistance), (playerPosition.y + spawnDistance));
+        float z = playerPosition.z;
+
         return new Vector3(x, y, z);
     }
 

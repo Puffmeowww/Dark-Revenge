@@ -124,14 +124,14 @@ public class PlayerMovement : MonoBehaviour
         Collider2D[] hitEnemiesType1 = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer1);
         foreach(Collider2D enemy1 in hitEnemiesType1)
         {
-            Debug.Log("Player is attacking Enemy 1");
+            //Debug.Log("Player is attacking Enemy 1");
             enemy1.GetComponent<EnemyAI>().TakeDamage(playerDamageEnemy1);
         }
 
         Collider2D[] hitEnemiesType2 = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer2);
         foreach(Collider2D enemy2 in hitEnemiesType2)
         {
-            Debug.Log("Player is attacking Enemy 2");
+            //Debug.Log("Player is attacking Enemy 2");
             enemy2.GetComponent<EnemyType2>().TakeDamage(playerDamageEnemy1);
         }
     }
