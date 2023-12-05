@@ -65,6 +65,9 @@ public class EnemyType2 : EnemyAI
     private float dodgeSpeed = 5.0f;
     private int checkDodge;
     public float distanceToPlayer = 1f;
+    AGrid grid;
+    Vector3 targetPosition;
+    ANode targetNode;
 
 
 
@@ -79,12 +82,15 @@ public class EnemyType2 : EnemyAI
         playerMovement = player.GetComponent<PlayerMovement>();
         //Initialize enemy state
         state = EnemyAI.State.Roaming;
-
+        
         //WarningCanvas.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()
     {
+        GameObject AStarObject = GameObject.Find("A*");
+        grid = AStarObject.GetComponent<AGrid>();
+
         startingPosition = transform.position;
         roamPosition = GetRoamingPosition();
     }
@@ -100,12 +106,7 @@ public class EnemyType2 : EnemyAI
                 animator.SetTrigger("IsWalking");
                 pathfindingMovement.speed = 3f;
                 //Debug.Log("Step 1 Roaming");
-<<<<<<< Updated upstream
                 //Debug.Log("Start current pos" + transform.position);
-=======
-                Debug.Log("Start current pos" + transform.position);
-                Debug.Log("Roam current pos" + roamPosition);
->>>>>>> Stashed changes
                 pathfindingMovement.MoveTo(roamPosition);
                 //CheckWallCollision();
                 float reachedPositionDistance = 4f;
@@ -371,26 +372,36 @@ public class EnemyType2 : EnemyAI
             // Choose a random direction to dodge
             Debug.Log("Dodging is true");
             Vector3 directionToPlayer = player.transform.position - transform.position;
-
+            // ANode targetNode = default;
+            // targetPosition = default;
 
             // Calculate the desired position away from the player
-            Vector3 targetPosition = transform.position - directionToPlayer.normalized * 6;
+            targetPosition = transform.position - directionToPlayer.normalized * 6;
+            targetNode = grid.NodeFromWorldPoint(targetPosition);
+            Debug.Log("target node-->"+targetNode.walkable);
+            // while (!targetNode.walkable)
+            // {
+            //     targetPosition = transform.position - directionToPlayer.normalized * 6;
+            //     targetNode = grid.NodeFromWorldPoint(targetPosition);
 
+            // }
             // Move towards the target position
-            
-            if(Vector3.Distance(transform.position,player.transform.position) < 10f)
+            if(targetNode.walkable)
             {
-                Debug.Log("Moving away from player");
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, dodgeSpeed * Time.deltaTime);
-            }
-            if(Vector3.Distance(transform.position,player.transform.position) >= 10f)
-            {
-                Debug.Log("Changing state to Roam after dodging");
-                isDodging=false;
-                roamPosition = GetRoamingPosition();
-                //state = EnemyAI.State.Roaming;
-                FindTarget();
-                
+                if (Vector3.Distance(transform.position,player.transform.position) < 10f)
+                {
+                    Debug.Log("Moving away from player");
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, dodgeSpeed * Time.deltaTime);
+                }
+                if(Vector3.Distance(transform.position,player.transform.position) >= 10f)
+                {
+                    Debug.Log("Changing state to Roam after dodging");
+                    isDodging=false;
+                    roamPosition = GetRoamingPosition();
+                    //state = EnemyAI.State.Roaming;
+                    FindTarget();
+                    
+                }
             }
 
             
