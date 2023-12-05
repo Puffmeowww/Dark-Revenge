@@ -63,6 +63,7 @@ public class EnemyAI : MonoBehaviour
         Hurt,
         UseMagic,
         MeleeAttack,
+        Dodge,
     }
 
     public State state;
