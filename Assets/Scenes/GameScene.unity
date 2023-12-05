@@ -71735,7 +71735,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -72542,7 +72542,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -72623,7 +72623,7 @@ MonoBehaviour:
   enemy2Prefab: {fileID: 1299529658128515143, guid: 35628c94743164f48b704b546ca488b3, type: 3}
   enemy3Prefab: {fileID: 7188988746468030187, guid: 2f26aba48b4b69e4a8f4f720359ee23a, type: 3}
   player: {fileID: 1179785802}
-  spawnDistance: 10
+  spawnDistance: 5
 --- !u!4 &821719368
 Transform:
   m_ObjectHideFlags: 0
@@ -87172,7 +87172,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3686330834342556921, guid: e54ce5686fe502446b086eba52131a13, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -6.53
       objectReference: {fileID: 0}
     - target: {fileID: 3686330834342556921, guid: e54ce5686fe502446b086eba52131a13, type: 3}
       propertyPath: m_LocalPosition.y
@@ -87221,6 +87221,10 @@ PrefabInstance:
     - target: {fileID: 7188988746468030187, guid: e54ce5686fe502446b086eba52131a13, type: 3}
       propertyPath: m_Name
       value: EnemyPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188988746468030187, guid: e54ce5686fe502446b086eba52131a13, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87389,7 +87393,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -87520,7 +87524,7 @@ Transform:
   m_GameObject: {fileID: 1179785800}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03, y: -0.61, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -87574,8 +87578,8 @@ MonoBehaviour:
   playerDamageEnemy1: 40
   playerDamageEnemy2: 20
   swordAudio: {fileID: 8300000, guid: 051e958d1ac437948b236218dae68043, type: 3}
-  playerCurrentHealth: 1000000
-  playerMaxHealth: 1000000
+  playerCurrentHealth: 100
+  playerMaxHealth: 100
   loseScreen: {fileID: 936346992}
   attackInterval: 1
   respawnTime: 5
@@ -87594,7 +87598,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -131338,7 +131342,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

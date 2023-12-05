@@ -43,8 +43,12 @@ public class EnemySpawner : MonoBehaviour
 
             if (spawnNode.walkable)
             {
-                
+                Debug.Log(spawnPosition);
                 break;
+            }
+            else
+            {
+
             }
 
         }

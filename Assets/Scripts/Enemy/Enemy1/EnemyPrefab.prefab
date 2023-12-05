@@ -387,7 +387,7 @@ Transform:
   m_GameObject: {fileID: 3157312563993108381}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.96, y: 3.34, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -493,6 +493,7 @@ MonoBehaviour:
   enemyDamage: 20
   attackAudio: {fileID: 8300000, guid: 06cca8bbe0f504241a2350d6d4070c67, type: 3}
   findTargetAudio: {fileID: 8300000, guid: 6a97e267ff6265641b186e00ee17173f, type: 3}
+  state: 0
 --- !u!114 &7891519727182348984
 MonoBehaviour:
   m_ObjectHideFlags: 0

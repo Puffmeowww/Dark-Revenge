@@ -138,6 +138,7 @@ public class WizardAI : EnemyAI
                 animator.SetTrigger("Hurt");
 
                 animator.SetBool("IsMove", false);
+                state = EnemyAI.State.MeleeAttack;
                 break;
         }
     }

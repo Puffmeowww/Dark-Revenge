@@ -96,7 +96,7 @@ public class EnemyType2 : EnemyAI
             case EnemyAI.State.Roaming:
                 animator.SetTrigger("IsWalking");
                 pathfindingMovement.speed = 3f;
-                Debug.Log("Step 1 Roaming");
+                //Debug.Log("Step 1 Roaming");
                 //Debug.Log("Start current pos" + transform.position);
                 pathfindingMovement.MoveTo(roamPosition);
                 //CheckWallCollision();
@@ -104,7 +104,7 @@ public class EnemyType2 : EnemyAI
                 if (Vector3.Distance(transform.position, roamPosition) < reachedPositionDistance)
                 {
                     roamPosition = GetRoamingPosition();
-                    Debug.Log("Step 2 Finding new roam position");
+                    //Debug.Log("Step 2 Finding new roam position");
                 }
 
                 // else if(animator.GetBool("IsMove") == false)
@@ -120,7 +120,7 @@ public class EnemyType2 : EnemyAI
 
             case EnemyAI.State.ChaseTarget:
                 animator.SetTrigger("IsWalking");
-                Debug.Log("Moving towards player");
+                //Debug.Log("Moving towards player");
                 pathfindingMovement.speed = 2f;
                 pathfindingMovement.MoveTo(player.transform.position);
                 animator.SetBool("IsMove", true);
@@ -218,24 +218,24 @@ public class EnemyType2 : EnemyAI
     {
         if ((targetPos - currentPos).x > 0)
         {
-            enemySprite.flipX = true;
+            enemySprite.flipX = false;
         }
         else
         {
-            enemySprite.flipX = false;
+            enemySprite.flipX = true;
         }
     }
 
     protected virtual void FindTarget()
     {
-        Debug.Log("current state Inside Find target: "+state);
+        //Debug.Log("current state Inside Find target: "+state);
         //In attack range
         if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
         {
 
             //WarningCanvas.SetActive(false);
             state = EnemyAI.State.Attack;
-            Debug.Log("current state inside 1st if: "+state);
+            //Debug.Log("current state inside 1st if: "+state);
             //return;
         }
 
@@ -250,7 +250,7 @@ public class EnemyType2 : EnemyAI
                 
             }
             state = EnemyAI.State.ChaseTarget;
-            Debug.Log("current state inside 2nd if: "+state);
+            //Debug.Log("current state inside 2nd if: "+state);
             //WarningCanvas.SetActive(true);
         }
 
@@ -260,13 +260,13 @@ public class EnemyType2 : EnemyAI
             //WarningCanvas.SetActive(false);
             //roamPosition = GetRoamingPosition();
             state = EnemyAI.State.Roaming;
-            Debug.Log("current state inside 3rd if: "+state);
+            //Debug.Log("current state inside 3rd if: "+state);
         }       
     }
 
     public bool CheckWallCollision()
     {
-        Debug.Log("Inside chk collision");
+        //Debug.Log("Inside chk collision");
         // Raycast to check for collisions with the wall
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.1f);
 
@@ -274,7 +274,7 @@ public class EnemyType2 : EnemyAI
         if (hit.collider != null && hit.collider.CompareTag("Wall"))
         {
             // Handle wall collision here
-            Debug.Log("Enemy collided with a wall!");
+            //Debug.Log("Enemy collided with a wall!");
             iscollision = true;
         }
         return iscollision;
